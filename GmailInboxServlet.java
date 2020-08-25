@@ -14,7 +14,6 @@ public class GmailInboxServlet extends HttpServlet {
 
     public void init() throws ServletException {
       // Do required initialization
-        String message = "Hello World";
     }
 
 
@@ -29,7 +28,10 @@ public class GmailInboxServlet extends HttpServlet {
             GmailInboxServlet gmail = new GmailInboxServlet();
             ArrayList<String> miraMessages = gmail.read();
             //out.println("<h1>" + this.message + "</h1>");
-            out.println("<h1>" + miraMessages + "</h1>");
+            out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title></head><body>");
+            out.println("<h2>" + miraMessages + "</h2>");
+            out.println("</body></html>");
+                   
     }
 
 
@@ -41,7 +43,7 @@ public class GmailInboxServlet extends HttpServlet {
            Session session = Session.getDefaultInstance(props, null);
 
            Store store = session.getStore("imaps");
-           store.connect("smtp.gmail.com", "YOUR+GMAIL+ADDRESS+HERE","YOUR+PASSWORD+HERE");
+           store.connect("smtp.gmail.com", "xxxxxxxxxxxxxxxxx","xxxxxxxxxxxx");
 
            Folder inbox = store.getFolder("inbox");
            inbox.open(Folder.READ_ONLY);
