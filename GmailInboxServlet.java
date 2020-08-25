@@ -41,7 +41,7 @@ public class GmailInboxServlet extends HttpServlet {
            Session session = Session.getDefaultInstance(props, null);
 
            Store store = session.getStore("imaps");
-           store.connect("smtp.gmail.com", "16fontainemira@gmail.com","16rueFontaine");
+           store.connect("smtp.gmail.com", "YOUR+GMAIL+ADDRESS+HERE","YOUR+PASSWORD+HERE");
 
            Folder inbox = store.getFolder("inbox");
            inbox.open(Folder.READ_ONLY);
