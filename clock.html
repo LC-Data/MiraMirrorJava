@@ -7,11 +7,12 @@ function startTime() {
   var h = today.getHours();
   var m = today.getMinutes();
   var s = today.getSeconds();
+  var ampm = "AM";
   h = checkHour(h);     //Remove this function call if you prefer a 24hr style clock
   m = checkTime(m);
   s = checkTime(s);
   document.getElementById('clock').innerHTML =
-  h + ":" + m + ":" + s;
+  h + ":" + m + ":" + s + " " + ampm;
   var t = setTimeout(startTime, 500);
 }
 function checkTime(i) {
@@ -19,7 +20,13 @@ function checkTime(i) {
   return i;
 }
 function checkHour(h){     
-	if (h > 12) {h = (h - 12)};
+  if (h > 12) {
+    h = (h - 12);
+    ampm = "PM";
+  } else if (h < 12) { 
+    h = "0" + h;
+    ampm = "AM";
+  }
     return h;
 }
 </script>
