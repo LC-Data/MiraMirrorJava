@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.ArrayList;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
+
+
 
 public class GmailInboxServlet extends HttpServlet {
 
@@ -56,6 +61,14 @@ public class GmailInboxServlet extends HttpServlet {
            System.out.println("Total Messages:- " + messageCount);
 
            Message[] messages = inbox.getMessages();
+
+           for(int i=0; i<messages.length/2; i++){
+                Message temp = messages[i];
+                messages[i] = messages[messages.length -i -1];
+                messages[messages.length -i -1] = temp;
+            }
+
+
            System.out.println("------------------------------");
            finalMessages = miraMessage(messages);
            inbox.close(true);
@@ -117,14 +130,30 @@ public class GmailInboxServlet extends HttpServlet {
             BodyPart bodyPart = mimeMultipart.getBodyPart(i);
             if (bodyPart.isMimeType("text/plain")) {
                 result = result + "\n" + bodyPart.getContent();
+                    if (result.contains("<")|result.contains(">")|result.contains("alert")){    //This is shit, garbage, this should be a proper XSS regex sanitizer
+                        result = sanitize(result);
+                    }
                 break; // without break same text appears twice in my tests
             } else if (bodyPart.getContent() instanceof MimeMultipart){
                 result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
+                if (result.contains("<")|result.contains(">")|result.contains("alert")){
+                    result = sanitize(result);
+                }
+
             } else {
                 result = result + " COULD NOT PROPERLY PARSE...\n";
+                result = sanitize(result);
             }
         }
         return result;
+    }
+
+    public static String sanitize(String string) {
+        try {
+            return URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
     }
 
 
