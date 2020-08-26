@@ -22,12 +22,15 @@ public class GmailInboxServlet extends HttpServlet {
       
       // Set response content type
             response.setContentType("text/html");
+            response.setIntHeader("Refresh", 10);   //This forces the servlet page to refresh every 10 seconds
+
             PrintWriter out = response.getWriter();
 
       // Actual logic goes here.
             GmailInboxServlet gmail = new GmailInboxServlet();
             ArrayList<String> miraMessages = gmail.read();
             //out.println("<h1>" + this.message + "</h1>");
+            //The following line of JavaScript implements a realtime clock with AM/PM string, and a trigger to refresh the page ever 60 seconds.
             out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title><script>var ampm=\"AM\";function startTime(){var e=new Date,t=e.getHours(),c=e.getMinutes(),n=e.getSeconds();t=checkHour(t),c=checkTime(c),n=checkTime(n),document.getElementById(\"clock\").innerHTML=t+\":\"+c+\":\"+n+\" \"+ampm;setTimeout(startTime,500)}function checkTime(e){return e<10&&(e=\"0\"+e),e}function checkHour(e){return e>12&&(e-=12),ampm=\"PM\",e}</script></head><body onload=\"startTime()\" style=\"text-align:center;background-color:black;color:white;\">");
             out.println("<div id=\"clock\"></div>");
             out.println("<h2>" + miraMessages + "</h2>");
