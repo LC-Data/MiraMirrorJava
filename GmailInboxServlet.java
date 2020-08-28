@@ -36,9 +36,25 @@ public class GmailInboxServlet extends HttpServlet {
             ArrayList<String> miraMessages = gmail.read();
             //out.println("<h1>" + this.message + "</h1>");
             //The following line of JavaScript implements a realtime clock with AM/PM string, and a trigger to refresh the page ever 60 seconds.
-            out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title><script>var ampm=\"AM\";function startTime(){var e=new Date,t=e.getHours(),c=e.getMinutes(),n=e.getSeconds();t=checkHour(t),c=checkTime(c),n=checkTime(n),document.getElementById(\"clock\").innerHTML=t+\":\"+c+\":\"+n+\" \"+ampm;setTimeout(startTime,500)}function checkTime(e){return e<10&&(e=\"0\"+e),e}function checkHour(e){return e>12&&(e-=12),ampm=\"PM\",e}</script></head><body onload=\"startTime()\" style=\"text-align:center;background-color:black;color:white;\">");
+            out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title><script>function startTime(){var e=new Date,t=e.getHours(),n=e.getMinutes(),a=e.getSeconds(),c=e.getDay(),u=e.getFullYear(),r=e.getMonth();t=checkHour(t),n=checkTime(n),a=checkTime(a),0==c?c='Sunday':1==c?c='Monday':2==c?c='Tuesday':3==c?c='Wednesday':4==c?c='Thursday':5==c?c='Friday':6==c&&(c='Saturday'),0==r?r='Jan':1==r?r='Feb':2==r?r='Mar':3==r?r='Apr':4==r?r='May':5==r?r='Jun':6==r?r='Jul':7==r?r='Aug':8==r?r='Sept':9==r?r='Oct':10==r?r='Nov':11==r&&(r='Dec'),document.getElementById('date').innerHTML=r+' '+c+' '+u,document.getElementById('clock').innerHTML=t+':'+n+':'+a+' AM';setTimeout(startTime,500)}function checkTime(e){return e<10&&(e='0'+e),e}function checkHour(e){return e>12?(e-=12,ampm='PM'):e<12&&(e='0'+e,ampm='AM'),e}</script></head><body onload=\"startTime()\" style=\"text-align:center;background-color:black;color:white;\">");
+            
+            //out.println("<a class=\"weatherwidget-io\" href=\"https://forecast7.com/en/45d42n75d70/ottawa/\" data-label_1=\"OTTAWA\" data-label_2=\"Current Weather\" data-font=\"Ubuntu\" data-icons=\"Climacons Animated\" data-days=\"3\" data-theme=\"dark\" data-suncolor=\"#dfda2c\" data-raincolor=\"#93c8eb\" >OTTAWA Current Weather</a>");
+            //out.println("<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>");
+
             out.println("<div id=\"clock\"></div>");
-            out.println("<h2>" + miraMessages + "</h2>");
+
+            out.println("<div id=\"date\"></div>");
+            //out.println("<h2>" + miraMessages + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(0) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(1) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(2) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(3) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(4) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(5) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(6) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(7) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(8) + "</h2><br>");
+            out.println("<h2>" + miraMessages.get(9) + "</h2><br>");
             out.println("</body></html>");
                    
     }
