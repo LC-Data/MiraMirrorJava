@@ -7,12 +7,59 @@ function startTime() {
   var h = today.getHours();
   var m = today.getMinutes();
   var s = today.getSeconds();
+  var d = today.getDay();
+  var y = today.getFulleYear();
+  var M = today.getMonth();
   var ampm = "AM";
   h = checkHour(h);     //Remove this function call if you prefer a 24hr style clock
   m = checkTime(m);
   s = checkTime(s);
-  document.getElementById('clock').innerHTML =
-  h + ":" + m + ":" + s + " " + ampm;
+
+  if (d == 0) {
+    d = "Sunday";
+  } else if (d == 1) {
+    d = "Monday";
+  } else if (d == 2) {
+    d = "Tuesday";
+  } else if (d == 3) {
+    d = "Wednesday";
+  } else if (d == 4) {
+    d = "Thursday";
+  } else if (d == 5) {
+    d = "Friday";
+  } else if (d == 6) {
+    d = "Saturday";
+  }
+
+  if (M == 0) {
+    M = "Jan";
+  } else if (M == 1) {
+    M = "Feb";
+  } else if (M == 2) {
+    M = "Mar";
+  }  else if (M == 3) {
+    M = "Apr";
+  }  else if (M == 4) {
+    M = "May";
+  }  else if (M == 5) {
+    M = "Jun";
+  }  else if (M == 6) {
+    M = "Jul";
+  }  else if (M == 7) {
+    M = "Aug";
+  }  else if (M == 8) {
+    M = "Sept";
+  }  else if (M == 9) {
+    M = "Oct";
+  }  else if (M == 10) {
+    M = "Nov";
+  }  else if (M == 11) {
+    M = "Dec";
+  }  
+
+  document.getElementById('date').innerHTML = M + " " + d + " " + y;
+
+  document.getElementById('clock').innerHTML = h + ":" + m + ":" + s + " " + ampm;
   var t = setTimeout(startTime, 500);
 }
 function checkTime(i) {
