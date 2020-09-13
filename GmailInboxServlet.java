@@ -27,7 +27,7 @@ public class GmailInboxServlet extends HttpServlet {
       
       // Set response content type
             response.setContentType("text/html");
-            response.setIntHeader("Refresh", 10);   //This forces the servlet page to refresh every 10 seconds
+            response.setIntHeader("Refresh", 20);   //This forces the servlet page to refresh every 10 seconds
 
             PrintWriter out = response.getWriter();
 
@@ -36,7 +36,7 @@ public class GmailInboxServlet extends HttpServlet {
             ArrayList<String> miraMessages = gmail.read();
             //out.println("<h1>" + this.message + "</h1>");
             //The following line of JavaScript implements a realtime clock with AM/PM string, and a trigger to refresh the page ever 60 seconds.
-            out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title><script>function startTime(){var e=new Date,t=e.getHours(),n=e.getMinutes(),a=e.getSeconds(),c=e.getDay(),u=e.getFullYear(),r=e.getMonth();t=checkHour(t),n=checkTime(n),a=checkTime(a),0==c?c='Sunday':1==c?c='Monday':2==c?c='Tuesday':3==c?c='Wednesday':4==c?c='Thursday':5==c?c='Friday':6==c&&(c='Saturday'),0==r?r='Jan':1==r?r='Feb':2==r?r='Mar':3==r?r='Apr':4==r?r='May':5==r?r='Jun':6==r?r='Jul':7==r?r='Aug':8==r?r='Sept':9==r?r='Oct':10==r?r='Nov':11==r&&(r='Dec'),document.getElementById('date').innerHTML=r+' '+c+' '+u,document.getElementById('clock').innerHTML=t+':'+n+':'+a+' AM';setTimeout(startTime,500)}function checkTime(e){return e<10&&(e='0'+e),e}function checkHour(e){return e>12?(e-=12,ampm='PM'):e<12&&(e='0'+e,ampm='AM'),e}</script></head><body onload=\"startTime()\" style=\"text-align:center;background-color:black;color:white;\">");
+            out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title><script>var ampm='';function startTime(){var e=new Date,D=e.getDate(),t=e.getHours(),a=e.getMinutes(),n=e.getSeconds(),c=e.getDay(),m=e.getFullYear(),u=e.getMonth();checkAMPM(),t=checkTime(t),a=checkTime(a),n=checkTime(n),0==c?c='Sunday':1==c?c='Monday':2==c?c='Tuesday':3==c?c='Wednesday':4==c?c='Thursday':5==c?c='Friday':6==c&&(c='Saturday'),0==u?u='Jan':1==u?u='Feb':2==u?u='Mar':3==u?u='Apr':4==u?u='May':5==u?u='Jun':6==u?u='Jul':7==u?u='Aug':8==u?u='Sept':9==u?u='Oct':10==u?u='Nov':11==u&&(u='Dec'),document.getElementById('clock').innerHTML=t+':'+a+':'+n+' '+ampm,document.getElementById('date').innerHTML=c+' '+u+' '+D+' '+m;setTimeout(startTime,500)}function checkTime(e){return e<10&&(e='0'+e),e}function checkAMPM(){var e=(new Date).getHours();e>11?ampm='PM':e<12&&(ampm='AM')}</script></head><body onload=\"startTime()\" style=\"text-align:center;background-color:black;color:white;\">");
             
             //out.println("<a class=\"weatherwidget-io\" href=\"https://forecast7.com/en/45d42n75d70/ottawa/\" data-label_1=\"OTTAWA\" data-label_2=\"Current Weather\" data-font=\"Ubuntu\" data-icons=\"Climacons Animated\" data-days=\"3\" data-theme=\"dark\" data-suncolor=\"#dfda2c\" data-raincolor=\"#93c8eb\" >OTTAWA Current Weather</a>");
             //out.println("<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>");
