@@ -114,7 +114,11 @@ public class GmailInboxServlet extends HttpServlet {
 
             out.println("<div id=\"date\"></div>");
             //out.println("<h2>" + miraMessages + "</h2><br>");
+            out.println("<h2>" + this.topNews[0] + "</h2><br>");
+            out.println("<h2>" + this.topNews[1] + "</h2><br>");
             out.println("<h2>" + this.topNews[2] + "</h2><br>");
+            out.println("<h2>" + this.topNews[3] + "</h2><br>");
+            out.println("<h2>" + this.topNews[4] + "</h2><br>");
             out.println("<h2>" + miraMessages.get(0) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(1) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(2) + "</h2><br>");
