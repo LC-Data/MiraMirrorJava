@@ -152,7 +152,7 @@ public class GmailInboxServlet extends HttpServlet {
       
       // Set response content type
             response.setContentType("text/html");
-            response.setIntHeader("Refresh", 20);   //This forces the servlet page to refresh every 10 seconds
+            response.setIntHeader("Refresh", 180);   //This forces the servlet page to refresh every 10 seconds
 
             PrintWriter out = response.getWriter();
 
@@ -162,46 +162,75 @@ public class GmailInboxServlet extends HttpServlet {
             //out.println("<h1>" + this.message + "</h1>");
             //The following line of JavaScript implements a realtime clock with AM/PM string, and a trigger to refresh the page ever 60 seconds.
             out.println("<!DOCTYPE html><html><head><title>MiraMirror Java Edition v0.1</title><script>var ampm='';function startTime(){var e=new Date,D=e.getDate(),t=e.getHours(),a=e.getMinutes(),n=e.getSeconds(),c=e.getDay(),m=e.getFullYear(),u=e.getMonth();checkAMPM(),t=checkTime(t),a=checkTime(a),n=checkTime(n),0==c?c='Sunday':1==c?c='Monday':2==c?c='Tuesday':3==c?c='Wednesday':4==c?c='Thursday':5==c?c='Friday':6==c&&(c='Saturday'),0==u?u='Jan':1==u?u='Feb':2==u?u='Mar':3==u?u='Apr':4==u?u='May':5==u?u='Jun':6==u?u='Jul':7==u?u='Aug':8==u?u='Sept':9==u?u='Oct':10==u?u='Nov':11==u&&(u='Dec'),document.getElementById('clock').innerHTML=t+':'+a+':'+n+' '+ampm,document.getElementById('date').innerHTML=c+' '+u+' '+D+' '+m;setTimeout(startTime,500)}function checkTime(e){return e<10&&(e='0'+e),e}function checkAMPM(){var e=(new Date).getHours();e>11?ampm='PM':e<12&&(ampm='AM')}</script></head><body onload=\"startTime()\" style=\"text-align:center;background-color:black;color:white;\">");
+            out.println("<style>");
+            out.println(".grid-container {border:1px solid gray;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: 0.1fr 1.8fr;gap: 21px 21px;grid-template-areas:\"ClockDate . Weather\"\"News Inbox NextAPI\";}");            
+            out.println("</style>");
             
             //out.println("<a class=\"weatherwidget-io\" href=\"https://forecast7.com/en/45d42n75d70/ottawa/\" data-label_1=\"OTTAWA\" data-label_2=\"Current Weather\" data-font=\"Ubuntu\" data-icons=\"Climacons Animated\" data-days=\"3\" data-theme=\"dark\" data-suncolor=\"#dfda2c\" data-raincolor=\"#93c8eb\" >OTTAWA Current Weather</a>");
             //out.println("<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>");
-
-            out.println("<div id=\"clock\"></div>");
-
-            out.println("<div id=\"date\"></div>");
-            //out.println("<h2>" + miraMessages + "</h2><br>");
-            out.println("<h2>" + this.topNews[0] + "</h2><br>");
-            out.println("<h2>" + this.topNews[1] + "</h2><br>");
-            out.println("<h2>" + this.topNews[2] + "</h2><br>");
-            out.println("<h2>" + this.topNews[3] + "</h2><br>");
-            if (this.topNews[4] != null ){
-                out.println("<h2>" + this.topNews[4] + "</h2><br>");
-            }
+            out.println("<div class=\"grid-container\" style=\"padding-top:5vh;\">");
             
-            out.println("<h2>" + this.the_weather[0] + "</h2><br>");
-            out.println("<h2>" + this.the_weather[1] + "</h2><br>");
-            out.println("<h2>" + this.the_weather[2] + "</h2><br>");
-            out.println("<h2>" + this.the_weather[3] + "</h2><br>");
-            //out.println("<h2>" + this.topNews[4] + "</h2><br>");
-            
-            out.println("<div id='news' style='display:inline-block;background: white;color: pink;border-radius: 7px;border: solid 2px grey;padding: 10px;width: 20%;'>");
-            out.println("<p>" + this.topNews[0] + "</p><br>");
-            out.println("<p>" + this.topNews[1] + "</p><br>");
-            out.println("<p>" + this.topNews[2] + "</p><br>");
-            out.println("<p>" + this.topNews[3] + "</p><br>");
-            out.println("<p>" + this.topNews[4] + "</p><br>");
+            out.println("<div class=\"ClockDate\" style=\"border:1px solid blue;\">");
+                out.println("<div id=\"clock\"></div>");
+                out.println("<div id=\"date\"></div>");
+                //out.println("<h2>" + miraMessages + "</h2><br>");
             out.println("</div>");
 
-            out.println("<h2>" + miraMessages.get(0) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(1) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(2) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(3) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(4) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(5) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(6) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(7) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(8) + "</h2><br>");
-            out.println("<h2>" + miraMessages.get(9) + "</h2><br>");
+            out.println("<div class=\".\" style=\"border:1px solid blue;\"></div>");
+            
+            
+
+            out.println("<div class=\"Weather\" style=\"border:1px solid blue;\">");
+                out.println("<div>" + this.the_weather[0] + "</div>");
+                out.println("<div>" + this.the_weather[1] + "</div>");
+                out.println("<div>" + this.the_weather[2] + "</div>");
+                out.println("<div>" + this.the_weather[3] + "</div>");
+                //out.println("<h2>" + this.topNews[4] + "</h2><br>");
+            out.println("</div>");
+            
+
+            out.println("<div class=\"News\" style=\"border:1px solid blue;\">");
+                //out.println("<div id='news' style='display:inline-block;background: white;color: pink;border-radius: 7px;border: solid 2px grey;padding: 10px;width: 20%;'>");
+                out.println("<p>" + this.topNews[0] + "</p><br>");
+                out.println("<p>" + this.topNews[1] + "</p><br>");
+                out.println("<p>" + this.topNews[2] + "</p><br>");
+                out.println("<p>" + this.topNews[3] + "</p><br>");
+                if (this.topNews[4] != null ){
+                    //out.println("<h2>" + this.topNews[4] + "</h2><br>");
+                    out.println("<p>" + this.topNews[4] + "</p><br>");
+                }
+                //out.println("</div>");
+            out.println("</div>");
+            
+
+
+            out.println("<div class=\"Inbox\" style=\"border:1px solid green;\">");
+                out.println(miraMessages.get(0) + "<br>");      //ADD LOGIC TO THESE TO CHECK IF THEY ARE NULL/EXIST
+                out.println(miraMessages.get(1) + "<br>");      //THE DIV UNDER IT WON'T RENDER ELSEWISE
+                out.println(miraMessages.get(2) + "<br>");
+                out.println(miraMessages.get(3) + "<br>");
+                out.println(miraMessages.get(4) + "<br>");
+                //out.println(miraMessages.get(5) + "<br>");
+                //out.println(miraMessages.get(6) + "<br>");
+                //out.println(miraMessages.get(7) + "<br>");
+                //out.println(miraMessages.get(8) + "<br>");
+                //out.println(miraMessages.get(9) + "<br>");
+            out.println("</div>");
+
+
+
+            out.println("<div class=\"NextAPI\" style=\"border:1px solid green;\">");
+                out.println("Hello</br>");
+            out.println("</div>");
+
+
+
+
+
+
+
+
+
 
             out.println("</body></html>");
                    
