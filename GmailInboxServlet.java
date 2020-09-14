@@ -31,16 +31,73 @@ import com.google.gson.reflect.TypeToken;
 public class GmailInboxServlet extends HttpServlet {
 
     String[] topNews = new String[5];
+    String[] the_weather = new String[4];
 
     public void init() throws ServletException {
       // Do required initialization
         //APIrequest2 getNews = new APIrequest2();
-        makeRequest();
+        getNews();
+        getWeather();
 
     }
 
 
-    public String[] makeRequest(){
+    public void getWeather() {
+
+        try {
+
+            URLConnection connection = new URL("https://api.openweathermap.org/data/2.5/weather?id=6094817&appid=ce1444209a162927bb8f5819f2112188&units=metric").openConnection();
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            InputStream response = connection.getInputStream();
+            //System.out.println(response.toString());          //This needs to be decoded
+
+            try (Scanner scanner = new Scanner(response)) {
+                String responseBody = scanner.useDelimiter("\\A").next();
+                //System.out.println(responseBody);
+                JsonObject convertedObject = new Gson().fromJson(responseBody, JsonObject.class);
+                System.out.println(convertedObject);
+                System.out.println("\n\n\n\n\n\n");
+
+                String responseAsString = convertedObject.toString();
+
+                String nameAsString = responseAsString.split("name")[1].substring(3).split("\"")[0];//This gets the name
+                System.out.println(nameAsString);
+                this.the_weather[0] = nameAsString;
+
+                String weatherAsString = responseAsString.split("description")[1].substring(3).split("\"")[0];//This gets the weather "scattered clouds, etc"
+                System.out.println(weatherAsString);
+                this.the_weather[1] = weatherAsString;
+
+                //String tempAsString = responseAsString.split("temp")[1].substring(2).split(",")[0];//This gets the current temperature
+                //tempAsString = tempAsString + " C";
+                //System.out.println(tempAsString);
+
+                String feels_likeAsString = responseAsString.split("feels_like")[1].substring(2).split(",")[0];//This gets the current temperature
+                feels_likeAsString = "Feels like: " + feels_likeAsString + " C";
+                System.out.println(feels_likeAsString);
+                this.the_weather[2] = feels_likeAsString;
+
+                String windAsString = responseAsString.split("speed")[1].substring(2).split(",")[0];//This gets the current temperature
+                windAsString = "Wind: " + windAsString + " km/h";
+                System.out.println(windAsString);
+                this.the_weather[3] = windAsString;
+                
+                //return this.topNews;
+            }
+
+        } catch(Exception e) {
+            System.out.println(e);
+
+            System.out.println("We have problems");
+        }
+
+        //System.out.println(this.the_weather[0]);
+        //return this.the_weather;
+    }
+
+
+
+    public void getNews(){
 
         try {
 
@@ -84,10 +141,9 @@ public class GmailInboxServlet extends HttpServlet {
         } catch(Exception e) {
             System.out.println(e);
 
-            System.out.println("We have problems");
+            System.out.println("We have problems with the news");
         }
 
-        return this.topNews;
     }
 
 
@@ -118,7 +174,24 @@ public class GmailInboxServlet extends HttpServlet {
             out.println("<h2>" + this.topNews[1] + "</h2><br>");
             out.println("<h2>" + this.topNews[2] + "</h2><br>");
             out.println("<h2>" + this.topNews[3] + "</h2><br>");
-            out.println("<h2>" + this.topNews[4] + "</h2><br>");
+            if (this.topNews[4] != null ){
+                out.println("<h2>" + this.topNews[4] + "</h2><br>");
+            }
+            
+            out.println("<h2>" + this.the_weather[0] + "</h2><br>");
+            out.println("<h2>" + this.the_weather[1] + "</h2><br>");
+            out.println("<h2>" + this.the_weather[2] + "</h2><br>");
+            out.println("<h2>" + this.the_weather[3] + "</h2><br>");
+            //out.println("<h2>" + this.topNews[4] + "</h2><br>");
+            
+            out.println("<div id='news' style='display:inline-block;background: white;color: pink;border-radius: 7px;border: solid 2px grey;padding: 10px;width: 20%;'>");
+            out.println("<p>" + this.topNews[0] + "</p><br>");
+            out.println("<p>" + this.topNews[1] + "</p><br>");
+            out.println("<p>" + this.topNews[2] + "</p><br>");
+            out.println("<p>" + this.topNews[3] + "</p><br>");
+            out.println("<p>" + this.topNews[4] + "</p><br>");
+            out.println("</div>");
+
             out.println("<h2>" + miraMessages.get(0) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(1) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(2) + "</h2><br>");
