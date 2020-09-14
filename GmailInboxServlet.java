@@ -1,24 +1,93 @@
 import java.io.*;
+import java.io.IOException;
+import java.io.DataInputStream; 
+import java.io.BufferedInputStream;  
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.ArrayList;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.lang.String.*;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 
 
 public class GmailInboxServlet extends HttpServlet {
 
+    String[] topNews = new String[5];
+
     public void init() throws ServletException {
       // Do required initialization
+        //APIrequest2 getNews = new APIrequest2();
+        makeRequest();
+
+    }
+
+
+    public String[] makeRequest(){
+
+        try {
+
+            URLConnection connection = new URL("http://newsapi.org/v2/top-headlines?country=ca&apiKey=a7a1a6a0dbe94b1784fd741c57ff0196").openConnection();
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            InputStream response = connection.getInputStream();
+            //System.out.println(response.toString());          //This needs to be decoded
+
+            try (Scanner scanner = new Scanner(response)) {
+                String responseBody = scanner.useDelimiter("\\A").next();
+                //System.out.println(responseBody);
+                JsonObject convertedObject = new Gson().fromJson(responseBody, JsonObject.class);
+                //System.out.println(convertedObject);
+                System.out.println("\n\n\n\n\n\n");
+                //System.out.println(convertedObject.get("articles"));
+                JsonArray jsonObjList = convertedObject.getAsJsonArray("articles");
+
+                String newsResponse = jsonObjList.toString();
+
+                System.out.println(newsResponse);
+
+                String[] sourceList = newsResponse.split("source"); //This will create a String Array that broke the String at each occurence of "source". This len is how many articles were returned.
+                //System.out.println(sourceList.length);
+                //System.out.println(sourceList[1]);
+                String firstSourceTitle = sourceList[1];    //This is the first source onward, since the split includes the pre-cursor to the split in element 0
+                // Should probably push these in to an array or something - the top 5 stories or however many
+                //String[] topNews = new String[5];
+                for (int x = 1; x < 6; x++) {       
+                    String story = sourceList[x];
+                    story = story.substring(3).split("title")[1];   //This series of splits and trims captures the Title from the API call
+                    story = story.substring(3).split("description")[0];
+                    story = story.substring(0,story.length() -3);
+                    System.out.println(story + "\n" + " " + x);
+                    this.topNews[x - 1] = story;
+                }
+                System.out.println(Arrays.toString(this.topNews));
+                
+                //return this.topNews;
+            }
+
+        } catch(Exception e) {
+            System.out.println(e);
+
+            System.out.println("We have problems");
+        }
+
+        return this.topNews;
     }
 
 
@@ -45,6 +114,7 @@ public class GmailInboxServlet extends HttpServlet {
 
             out.println("<div id=\"date\"></div>");
             //out.println("<h2>" + miraMessages + "</h2><br>");
+            out.println("<h2>" + this.topNews[2] + "</h2><br>");
             out.println("<h2>" + miraMessages.get(0) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(1) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(2) + "</h2><br>");
@@ -55,6 +125,7 @@ public class GmailInboxServlet extends HttpServlet {
             out.println("<h2>" + miraMessages.get(7) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(8) + "</h2><br>");
             out.println("<h2>" + miraMessages.get(9) + "</h2><br>");
+
             out.println("</body></html>");
                    
     }
@@ -93,7 +164,7 @@ public class GmailInboxServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-	return finalMessages;
+    return finalMessages;
     }
 
 
@@ -124,7 +195,7 @@ public class GmailInboxServlet extends HttpServlet {
                 System.out.println(e);
             }
         }
-	return mira_messages_in_inbox;
+    return mira_messages_in_inbox;
     }
 
     private String getTextFromMessage(Message message) throws MessagingException, IOException {
